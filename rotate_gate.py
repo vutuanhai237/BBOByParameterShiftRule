@@ -1,13 +1,13 @@
 import pennylane as qml
 import matplotlib.pyplot as plt
 
+from pennylane import numpy as np
 dev = qml.device("default.qubit", wires=1)
 @qml.qnode(dev)
 def circuit(params):
     qml.RX(params[0], wires=0)
     qml.RY(params[1], wires=0)
     return qml.expval(qml.PauliZ(0))
-from pennylane import numpy as np
 def cost(x):
     return circuit(x)
 
