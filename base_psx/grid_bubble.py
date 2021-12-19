@@ -44,8 +44,6 @@ class GridBubble():
             for x, y in self.points:
                 self.losses.append(self.loss_func(x, y))
             a = np.array(self.losses)
-            
-            
             min_loss = a[np.isfinite(a)].min()
             # print(str(self.step_size) + ': ' + str(min_loss))
 
