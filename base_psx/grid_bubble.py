@@ -2,7 +2,6 @@ import typing
 import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.patches import Rectangle
-from adjustText import adjust_text
 class GridBubble():
     def __init__(self, loss_func: typing.Callable, radius = 10, center = (0, 0)) -> None:
         self.radius = radius
@@ -19,15 +18,15 @@ class GridBubble():
     def compute_points(self):
         x, y = self.center
         self.points.clear()
-        self.points.append((x - self.radius, y + self.radius))
+        # self.points.append((x - self.radius, y + self.radius))
         self.points.append((x, y + self.radius))
-        self.points.append((x + self.radius, y + self.radius))
+        # self.points.append((x + self.radius, y + self.radius))
         self.points.append((x - self.radius, y))
         self.points.append((x, y))
         self.points.append((x + self.radius, y))
-        self.points.append((x - self.radius, y - self.radius))
+        # self.points.append((x - self.radius, y - self.radius))
         self.points.append((x, y - self.radius))
-        self.points.append((x + self.radius, y - self.radius))
+        # self.points.append((x + self.radius, y - self.radius))
         return
 
     def fit(self, learning_rate = 2, threshold = 10**(-5), limit_step = 1000):
@@ -43,6 +42,8 @@ class GridBubble():
             self.losses.clear()
             for x, y in self.points:
                 self.losses.append(self.loss_func(x, y))
+            print(self.points)
+            print(self.losses)
             a = np.array(self.losses)
             min_loss = a[np.isfinite(a)].min()
             # print(str(self.step_size) + ': ' + str(min_loss))
@@ -65,23 +66,23 @@ class GridBubble():
                 return self.center
         return self.center
     
-    def plot(self, path = './'):
-        for i in range(0, len(self.centers)):
-            plt.gca().add_patch(Rectangle((self.centers[i][0] - self.radiuss[i], self.centers[i][1] - self.radiuss[i]), 2*self.radiuss[i], 2*self.radiuss[i], edgecolor='red',
-                                        facecolor='none', lw=1))
-            plt.xticks(np.arange(0, np.max(self.radiuss), 5.0))
-            plt.yticks(np.arange(0, np.max(self.radiuss), 5.0))
-            plt.legend(loc='upper left')
-            if i > 0:
-                x1, y1 = self.centers[i-1]
-                x2, y2 = self.centers[i]
-                plt.arrow(x1, y1, x2 - x1, y2 - y1, head_length=.2, head_width=.2, length_includes_head=True)
-            texts = []
-            for j in range(0, i + 1):
-                texts.append(plt.text(x = self.centers[j][0] + 0.3, y = self.centers[j][1] + 0.3, s = str(j)))
+    # def plot(self, path = './'):
+    #     for i in range(0, len(self.centers)):
+    #         plt.gca().add_patch(Rectangle((self.centers[i][0] - self.radiuss[i], self.centers[i][1] - self.radiuss[i]), 2*self.radiuss[i], 2*self.radiuss[i], edgecolor='red',
+    #                                     facecolor='none', lw=1))
+    #         plt.xticks(np.arange(0, np.max(self.radiuss), 5.0))
+    #         plt.yticks(np.arange(0, np.max(self.radiuss), 5.0))
+    #         plt.legend(loc='upper left')
+    #         if i > 0:
+    #             x1, y1 = self.centers[i-1]
+    #             x2, y2 = self.centers[i]
+    #             plt.arrow(x1, y1, x2 - x1, y2 - y1, head_length=.2, head_width=.2, length_includes_head=True)
+    #         texts = []
+    #         for j in range(0, i + 1):
+    #             texts.append(plt.text(x = self.centers[j][0] + 0.3, y = self.centers[j][1] + 0.3, s = str(j)))
 
-                plt.scatter(self.centers[j][0], self.centers[j][1], s = 1, color='black')
-            plt.title(str(i + 1) + '/' + str(len(self.centers)) + ', Center: (' + str(self.centers[i][0]) + ', ' + str(self.centers[i][1]) + '), Radius: ' +  str(self.radiuss[i]) + ', Loss: ' + str(np.around(self.min_losses[i], 2)))
-            adjust_text(texts, only_move={'points':'y', 'texts':'y'})
-            plt.savefig(path + 'Iteration ' + str(i + 1) + '.png', format='png', dpi=600)
-            plt.clf()
+    #             plt.scatter(self.centers[j][0], self.centers[j][1], s = 1, color='black')
+    #         plt.title(str(i + 1) + '/' + str(len(self.centers)) + ', Center: (' + str(self.centers[i][0]) + ', ' + str(self.centers[i][1]) + '), Radius: ' +  str(self.radiuss[i]) + ', Loss: ' + str(np.around(self.min_losses[i], 2)))
+    #         adjust_text(texts, only_move={'points':'y', 'texts':'y'})
+    #         plt.savefig(path + 'Iteration ' + str(i + 1) + '.png', format='png', dpi=600)
+    #         plt.clf()
