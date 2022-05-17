@@ -5,7 +5,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from types import FunctionType
 
 
-def param_shift(func, x, r, epsilon):
+def param_shift(func: FunctionType, x: float, r: float, epsilon: float):
     return r*(func(x + epsilon) - func(x - epsilon))
 
 def optimize(rs: np.ndarray, epsilons: np.ndarray, func: FunctionType, x: float):
